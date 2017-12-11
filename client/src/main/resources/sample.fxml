@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <VBox fx:controller="ru.geekbrains.Controller"
       xmlns:fx="http://javafx.com/fxml" alignment="center">
-    <TextArea editable="false" fx:id="mainTextArea" VBox.vgrow="ALWAYS"/>
+    <TextArea fx:id="mainTextArea" editable="false" VBox.vgrow="ALWAYS"/>
     <HBox>
         <TextField HBox.hgrow="ALWAYS" fx:id="msgField" promptText="Enter your message" onAction="#sendMessage"/>
         <Button text="Send" onAction="#sendMessage"/>
