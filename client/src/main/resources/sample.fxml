@@ -1,4 +1,13 @@
-<?import javafx.scene.layout.GridPane?>
-<GridPane fx:controller="ru.geekbrains.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<VBox fx:controller="ru.geekbrains.Controller"
+      xmlns:fx="http://javafx.com/fxml" alignment="center">
+    <TextArea editable="false" fx:id="mainTextArea" VBox.vgrow="ALWAYS"/>
+    <HBox>
+        <TextField HBox.hgrow="ALWAYS" fx:id="msgField" promptText="Enter your message" onAction="#sendMessage"/>
+        <Button text="Send" onAction="#sendMessage"/>
+    </HBox>
+</VBox>
