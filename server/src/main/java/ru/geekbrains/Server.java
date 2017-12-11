@@ -20,7 +20,7 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept(); //Waiting for client and not moving forward until client connected
                 System.out.println("Client connected");
-                clients.add(new ClientHandler(socket));
+                clients.add(new ClientHandler(this, socket));
             }
         } catch(Exception e){
             e.printStackTrace();
