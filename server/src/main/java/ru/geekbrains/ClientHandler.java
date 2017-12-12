@@ -17,12 +17,16 @@ public class ClientHandler {
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
+            System.out.println("ClientHandler Constructor");
 
             new Thread(new Runnable() {
                 public void run() {
+                    System.out.println("ClientHandler run()");
                     try {
                         while (true){
+                            System.out.println("ready to read msg");
                             String msg = in.readUTF();
+                            System.out.println("MSG: " + msg); //TO REMOVE
                             server.broadcastMsg(msg);
                             System.out.println(msg);
                         }
@@ -46,7 +50,7 @@ public class ClientHandler {
                         }
                     }
                 }
-            });
+            }).start();
         } catch (IOException e){
             e.printStackTrace();
         }

@@ -68,6 +68,7 @@ public class Controller implements Initializable{
     public void sendMessage(){
         try {
             out.writeUTF(msgField.getText());
+            System.out.println(msgField.getText());
             msgField.clear();
             msgField.requestFocus();
         } catch (IOException e) {
