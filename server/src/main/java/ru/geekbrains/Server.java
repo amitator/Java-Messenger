@@ -13,6 +13,7 @@ public class Server {
 
     public Server() {
         try {
+            SQLHandler.connect();
             serverSocket = new ServerSocket(8189);
             System.out.println("Server started on port 8189");
             clients = new Vector<ClientHandler>();
@@ -30,6 +31,7 @@ public class Server {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            SQLHandler.disconnect();
         }
     }
 

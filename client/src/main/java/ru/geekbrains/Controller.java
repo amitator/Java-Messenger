@@ -1,9 +1,12 @@
 package ru.geekbrains;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,12 +19,35 @@ public class Controller implements Initializable{
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
+    private boolean authorized;
 
     @FXML
     TextArea mainTextArea;
 
     @FXML
     TextField msgField;
+
+    @FXML
+    TextField loginField;
+
+    @FXML
+    PasswordField passField;
+
+    @FXML
+    HBox msgPanel, authPanel;
+
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
+        if (this.authorized){
+            authPanel.setVisible(false);
+            msgPanel.setVisible(true);
+            msgPanel.setManaged(true);
+        } else {
+            authPanel.setVisible(true);
+            msgPanel.setVisible(false);
+            msgPanel.setManaged(false);
+        }
+    }
 
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -74,6 +100,10 @@ public class Controller implements Initializable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void login(ActionEvent actionEvent) {
 
     }
 }
