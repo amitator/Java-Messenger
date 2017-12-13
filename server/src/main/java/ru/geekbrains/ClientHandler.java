@@ -10,6 +10,7 @@ public class ClientHandler {
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
+    private String nick;
 
     public ClientHandler(final Server server, final Socket socket){
         try {
@@ -17,37 +18,45 @@ public class ClientHandler {
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
-            System.out.println("ClientHandler Constructor");
 
-            new Thread(new Runnable() {
-                public void run() {
-                    System.out.println("ClientHandler run()");
+            new Thread(() -> {
+                try {
+                    while (true){
+                        String msg = in.readUTF();
+                        if (msg.startsWith("/auth ")){
+                            String[] tokens = msg.split(" ");
+                            String nick = SQLHandler.getNickByLoginPass(tokens[1], tokens[2]);
+                            if (nick != null){
+                                out.writeUTF("/authok " + nick);
+                                this.nick = nick;
+                                server.subscribe(this);
+                                break;
+                            } else {
+                                out.writeUTF("Wrong Usernane/Password");
+                            }
+                        }
+                    }
+                    while (true){
+                        String msg = in.readUTF();
+                        server.broadcastMsg(msg);
+                    }
+                } catch (IOException e){
+                    e.printStackTrace();
+                } finally {
                     try {
-                        while (true){
-                            System.out.println("ready to read msg");
-                            String msg = in.readUTF();
-                            System.out.println("MSG: " + msg); //TO REMOVE
-                            server.broadcastMsg(msg);
-                            System.out.println(msg);
-                        }
-                    } catch (IOException e){
+                        socket.close();
+                    } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
-                        try {
-                            socket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            in.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    }
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }).start();

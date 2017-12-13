@@ -20,6 +20,7 @@ public class Controller implements Initializable{
     private DataInputStream in;
     private DataOutputStream out;
     private boolean authorized;
+    private String nick;
 
     @FXML
     TextArea mainTextArea;
@@ -46,6 +47,7 @@ public class Controller implements Initializable{
             authPanel.setVisible(true);
             msgPanel.setVisible(false);
             msgPanel.setManaged(false);
+            nick ="";
         }
     }
 
@@ -54,34 +56,44 @@ public class Controller implements Initializable{
             socket = new Socket("localhost", 8189);
             out = new DataOutputStream(socket.getOutputStream());
             in = new DataInputStream(socket.getInputStream());
+            setAuthorized(false);
             Thread t = new Thread(new Runnable() {
                 public void run() {
                     try {
-                    while (true){
-                        String str = null;
-                        str = in.readUTF();
-                        mainTextArea.appendText(str);
-                        mainTextArea.appendText("\n");
+                        while (true){
+                            String str = in.readUTF();
+                            if (str.startsWith("/authok")){
+                                setAuthorized(true);
+                                nick = str.split(" ")[1];
+                                break;
+                            }
+                            mainTextArea.appendText(str);
+                            mainTextArea.appendText("\n");
                         }
-                    } catch (IOException e) {
-                            e.printStackTrace();
-                    } finally {
-                        try {
-                            socket.close();
+                        while (true){
+                            String str = in.readUTF();
+                            mainTextArea.appendText(str);
+                            mainTextArea.appendText("\n");
+                            }
                         } catch (IOException e) {
-                            e.printStackTrace();
+                                e.printStackTrace();
+                        } finally {
+                            try {
+                                socket.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                in.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                out.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        try {
-                            in.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             });
             t.setDaemon(true);
@@ -104,6 +116,12 @@ public class Controller implements Initializable{
     }
 
     public void login(ActionEvent actionEvent) {
-
+        try {
+            out.writeUTF("/auth" + loginField.getText() + " " + passField.getText());
+            loginField.clear();
+            passField.clear();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

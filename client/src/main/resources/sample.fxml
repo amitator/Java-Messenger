@@ -8,7 +8,7 @@
       xmlns:fx="http://javafx.com/fxml" alignment="center">
     <HBox fx:id="authPanel">
         <TextField HBox.hgrow="ALWAYS" fx:id="loginField" promptText="Login"/>
-        <PasswordField HBox.hgrow="ALWAYS" fx:id="passField" promptText="Password"/>
+        <PasswordField HBox.hgrow="ALWAYS" fx:id="passField" promptText="Password" onAction="#login"/>
         <Button text="Login" onAction="#login"/>
     </HBox>
     <TextArea fx:id="mainTextArea" editable="false" VBox.vgrow="ALWAYS"/>

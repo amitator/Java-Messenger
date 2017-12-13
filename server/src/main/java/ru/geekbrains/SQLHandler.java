@@ -8,7 +8,7 @@ public class SQLHandler {
 
     public static void connect() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:data.db");
+        connection = DriverManager.getConnection("jdbc:sqlite:server/data.db");
     }
 
     public static String getNickByLoginPass(String login, String pass){

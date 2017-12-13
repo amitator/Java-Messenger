@@ -21,7 +21,7 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept(); //Waiting for client and not moving forward until client connected
                 System.out.println("Client connected");
-                clients.add(new ClientHandler(this, socket));
+                new ClientHandler(this, socket);
         }
         } catch(Exception e){
             e.printStackTrace();
@@ -39,6 +39,10 @@ public class Server {
         for (ClientHandler o: clients) {
             o.sendMsg(msg);
         }
+    }
+
+    public void subscribe(ClientHandler clientHandler) {
+        clients.add(clientHandler);
     }
 
     public void unsubscribe(ClientHandler clientHandler) {
