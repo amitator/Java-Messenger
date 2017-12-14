@@ -28,6 +28,7 @@ public class ClientHandler {
                             String nick = SQLHandler.getNickByLoginPass(tokens[1], tokens[2]);
                             if (nick != null){
                                 out.writeUTF("/authok " + nick);
+                                server.broadcastMsg(nick + " joined the chat\n");
                                 this.nick = nick;
                                 server.subscribe(this);
                                 break;

@@ -47,7 +47,7 @@ public class Controller implements Initializable{
             authPanel.setVisible(true);
             msgPanel.setVisible(false);
             msgPanel.setManaged(false);
-            nick ="";
+            nick = "";
         }
     }
 
@@ -70,6 +70,8 @@ public class Controller implements Initializable{
                             mainTextArea.appendText(str);
                             mainTextArea.appendText("\n");
                         }
+                        mainTextArea.clear();
+                        mainTextArea.appendText(nick);
                         while (true){
                             String str = in.readUTF();
                             mainTextArea.appendText(str);
@@ -117,7 +119,8 @@ public class Controller implements Initializable{
 
     public void login(ActionEvent actionEvent) {
         try {
-            out.writeUTF("/auth" + loginField.getText() + " " + passField.getText());
+            String str = "/auth " + loginField.getText() + " " + passField.getText();
+            out.writeUTF(str);
             loginField.clear();
             passField.clear();
         } catch (IOException e) {

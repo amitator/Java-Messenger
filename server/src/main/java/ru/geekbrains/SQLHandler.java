@@ -9,11 +9,12 @@ public class SQLHandler {
     public static void connect() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         connection = DriverManager.getConnection("jdbc:sqlite:server/data.db");
+        stmt = connection.createStatement();
     }
 
     public static String getNickByLoginPass(String login, String pass){
         try {
-            ResultSet rs = stmt.executeQuery(String.format("SELECT nick FROM users WHERE login = %s AND password = %s;", login, pass));
+            ResultSet rs = stmt.executeQuery(String.format("SELECT nick FROM users WHERE login = '%s' AND password = '%s';", login, pass));
             if (rs.next()){
                 return rs.getString(1);
             }
