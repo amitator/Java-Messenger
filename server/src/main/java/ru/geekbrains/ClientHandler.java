@@ -25,11 +25,11 @@ public class ClientHandler {
                         String msg = in.readUTF();
                         if (msg.startsWith("/auth ")){
                             String[] tokens = msg.split(" ");
-                            String nick = SQLHandler.getNickByLoginPass(tokens[1], tokens[2]);
-                            if (nick != null){
-                                out.writeUTF("/authok " + nick);
-                                server.broadcastMsg(nick + " joined the chat\n");
-                                this.nick = nick;
+                            String nickName = SQLHandler.getNickByLoginPass(tokens[1], tokens[2]);
+                            if (nickName != null){
+                                out.writeUTF("/authok " + nickName);
+                                server.broadcastMsg(nickName + " joined the chat\n");
+                                this.nick = nickName;
                                 server.subscribe(this);
                                 break;
                             } else {
@@ -44,6 +44,7 @@ public class ClientHandler {
                 } catch (IOException e){
                     e.printStackTrace();
                 } finally {
+                    server.unsubscribe(this);
                     try {
                         socket.close();
                     } catch (IOException e) {
